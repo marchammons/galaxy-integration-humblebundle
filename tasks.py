@@ -194,8 +194,8 @@ def release(c, full=None):
         print('pushing "bump version" commit')
         c.run(f'git push')
 
-        print('creating and pushing to origin tag: ', tag)
         tag = 'v' + __version__
+        print('creating and pushing to origin tag: ', tag)
         c.run(f'git tag {tag}')
         c.run(f'git push origin {tag}')
 
