@@ -36,7 +36,7 @@ Edit your local [config.ini](src/config.ini)
 - Installed games: use only Windows registry scan; edit `search_paths` to enable directory scaning feature
 
 ## Bug Reporting
-This integrations uses sentry.io to report anonymous error reports.
+This integrations uses sentry.io to send anonymous error reports.
 Personal and sensitive data are not gathered.
 
 ## Acknowledgements
