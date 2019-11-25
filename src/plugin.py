@@ -171,7 +171,7 @@ class HumbleBundlePlugin(Plugin):
         try:
             game = self._local_games[game_id]
         except KeyError as e:
-            logging.error(e, extra={'local_games': self._local_games})
+            logging.error(repr(e), extra={'local_games': self._local_games})
         else:
             game.run()
 
@@ -179,7 +179,7 @@ class HumbleBundlePlugin(Plugin):
         try:
             game = self._local_games[game_id]
         except KeyError as e:
-            logging.error(e, extra={'local_games': self._local_games})
+            logging.error(repr(e), extra={'local_games': self._local_games})
         else:
             game.uninstall()
 
@@ -187,7 +187,7 @@ class HumbleBundlePlugin(Plugin):
         try:
             game = self._owned_games[game_id]
         except KeyError as e:
-            logging.error(e, extra={'owned_games': self._owned_games})
+            logging.error(repr(e), extra={'owned_games': self._owned_games})
             return None
         else:
             HP_OS_MAP = {
