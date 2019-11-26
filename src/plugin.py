@@ -163,7 +163,7 @@ class HumbleBundlePlugin(Plugin):
                     webbrowser.open(url['signed_url'])
 
         except Exception as e:
-            logging.exception(e, extra={'game': game})
+            logging.exception(repr(e), extra={'game': game})
         finally:
             self._under_instalation.remove(game_id)
 
@@ -171,6 +171,7 @@ class HumbleBundlePlugin(Plugin):
         try:
             game = self._local_games[game_id]
         except KeyError as e:
+            logging.debug(f'local games: {self._local_games}')
             logging.error(repr(e), extra={'local_games': self._local_games})
         else:
             game.run()
@@ -179,6 +180,7 @@ class HumbleBundlePlugin(Plugin):
         try:
             game = self._local_games[game_id]
         except KeyError as e:
+            logging.debug(f'local games: {self._local_games}')
             logging.error(repr(e), extra={'local_games': self._local_games})
         else:
             game.uninstall()
@@ -190,15 +192,16 @@ class HumbleBundlePlugin(Plugin):
             logging.error(repr(e), extra={'owned_games': self._owned_games})
             return None
         else:
+            NO_OSC = OSCompatibility(0)
             HP_OS_MAP = {
                 HP.WINDOWS: OSCompatibility.Windows,
                 HP.MAC: OSCompatibility.MacOS,
                 HP.LINUX: OSCompatibility.Linux
             }
-            osc = OSCompatibility(0)
+            osc = NO_OSC
             for platform in game.downloads:
-                osc |= HP_OS_MAP.get(platform, OSCompatibility(0))
-            return osc if osc else None
+                osc |= HP_OS_MAP.get(platform, NO_OSC)
+            return osc if osc != NO_OSC else None
 
     async def _check_owned(self):
         async with self._getting_owned_games:
@@ -224,7 +227,9 @@ class HumbleBundlePlugin(Plugin):
             logging.debug(f'Checking installed games with path scanning in: {self._settings.installed.search_dirs}')
             self._local_games = await self._app_finder.find_local_games(owned_title_id, self._settings.installed.search_dirs)
         else:
+            logging.debug(f'local games before update: {self._local_games}')
             self._local_games.update(await self._app_finder.find_local_games(owned_title_id, None))
+            logging.debug(f'local games after update: {self._local_games}')
         await asyncio.sleep(4)
 
     async def _check_statuses(self):

@@ -91,7 +91,7 @@ class WindowsAppFinder(BaseAppFinder):
                         exe = self._find_executable(human_name, uk)
                         if exe is not None:
                             game = LocalHumbleGame(machine_name, exe, uk.uninstall_string)
-                            logging.info(f'New local game found: {game}')
+                            logging.info(f'New local game found for {machine_name}: {game}')
                             local_games[machine_name] = game
                             del not_found[human_name]
                             break
